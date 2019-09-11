@@ -59,22 +59,17 @@ public class MaxSum extends Thread {
   }
 
   public void run() {
-    //System.out.println("Thread " + Thread.currentThread().getId() + " is running");
+    System.out.println("Thread " + Thread.currentThread().getId() + " is running");
     maxSubArray(start, end);
   }
 
   public static void main(String args[]) {
     final int SIZE = 1_000_000;
-    //int[] a = new int[SIZE];
-    //Utils.randomArray(a);
-    int[] a =  {2, 3, 4, 5, 7};
-    //Utils.displayArray("Array", a);
-    //int aux = 0;
-    /*for(int i = 0; i < a.length; i++) {
-      aux += a[i];
-    }
-    System.out.println("Posible value: " + aux);*/
+    int[] a =  {-1, 6, -2, 5, -1, 4, 3, -4, -3, 1};
 
+    /*int[] a = new int[SIZE];
+    Utils.randomArray(a);
+    Utils.displayArray("Array", a);*/
 
     MaxSum threads[];
     int block;
@@ -82,19 +77,16 @@ public class MaxSum extends Thread {
     double acum;
     int result = Integer.MIN_VALUE;
 
-    threads = new MaxSum[Runtime.getRuntime().availableProcessors()];
+    //threads = new MaxSum[3];
+    threads = new MaxSum[1];
     block = a.length / Runtime.getRuntime().availableProcessors();
 
     acum = 0;
     int mid = (0 - a.length - 1) / 2;
     for(int i = 0; i < 10; i++) {
-      for(int j = 0; j < threads.length; j++) {
-        if(j != threads.length - 1) {
-          threads[j] = new MaxSum((j + 1) * block, (j + 2) * block, a);
-        } else {
-          threads[j] = new MaxSum((j + 1) * block, a.length-1, a);
-        }
-      }
+      threads[0] = new MaxSum(1 * block, a.length-1, a);
+      //threads[1] = new MaxSum(1 * block, (mid * block) , a);
+      //threads[2] = new MaxSum((mid + 1)* block, a.length-1, a);
 
       startTime = System.currentTimeMillis();
 
@@ -112,7 +104,6 @@ public class MaxSum extends Thread {
 
       for(int j = 0; j < threads.length; j++) {
         result = Math.max(result, threads[j].getResult());
-        //System.out.println(result);
       }
 
       stopTime = System.currentTimeMillis();
