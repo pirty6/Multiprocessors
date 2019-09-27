@@ -1,3 +1,21 @@
+/*----------------------------------------------------------------
+
+*
+
+* Multiprocesadores: Threads en Java.
+
+* Fecha: 9-Sep-2019
+
+* Autor: A01205559 Roberto Nuñez
+         A01206747 Mariana Perez
+
+*
+  Tamaño de pruebas = 1_000_000
+  Speedup = Best_sequential_algorithm/ best_parallel_algorithm
+  Speedup = 346722.1 / 6223.4 = 55.71
+
+*--------------------------------------------------------------*/
+
 import java.util.Arrays;
 
 public class MaxSumSeq {
