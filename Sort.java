@@ -48,7 +48,7 @@ public class Sort extends Thread {
 
     for(int i = 0; i < 10; i++) {
       for(int j = 0; j < threads.length; j++) {
-        if(j != threads.length; j++) {
+        if(j != threads.length) {
           if(j != threads.length - 1) {
             threads[j] = new Sort((j) * block, (j + 1) * block, array, temp);
           } else {
@@ -70,7 +70,7 @@ public class Sort extends Thread {
           }
         }
 
-        
+
       }
     }
   }
