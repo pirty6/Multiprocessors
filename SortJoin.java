@@ -67,6 +67,7 @@ public class SortJoin extends RecursiveAction{
 
         stopTime = System.currentTimeMillis();
         acum += (stopTime - startTime);
+        pool.shutdown();
       }
       array = Arrays.copyOf(temp, temp.length);
       Utils.displayArray("after", array);
