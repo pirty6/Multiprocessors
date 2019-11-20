@@ -1,22 +1,43 @@
+/*----------------------------------------------------------------
+
+*
+
+* Multiprocesadores: Cuda
+
+* Fecha: 11-Nov-2019
+
+* Autor: A01206747 Mariana Perez
+  Autor: A01205559 Roberto Nuñez
+
+* Image = 1080 x 1920
+  Speedup =  33.93700 ms / 0.00250 ms  = 13.5748
+
+*--------------------------------------------------------------*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <opencv/highgui.h>
 #include "cheader.h"
 
-void grayscale(IplImage * src, IplImage *dest) {
-  double r,g,b, l;
+void grayscale_pixel(IplImage * src, IplImage *dest, int ren, int col) {
   int pos;
-  for(int i = 0; i < src->width; i++) {
-    for(int j = 0; j < src->height; j++) {
-      pos = (j * src->width + i) * src->nChannels;
-      r = (double)src->imageData[pos];
-      g = (double)src->imageData[pos + 1];
-      b = (double)src->imageData[pos + 2];
-      l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-      dest->imageData[pos] = l;
-      dest->imageData[pos + 1] = l;
-      dest->imageData[pos + 2] = l;
-    }
+  int step = src->widthStep / sizeof(uchar);
+  pos = (ren * step) + (col * src->nChannels);
+  unsigned char r = (float)src->imageData[pos];
+  unsigned char g = (float)src->imageData[pos + 1];
+  unsigned char b = (float)src->imageData[pos + 2];
+  dest->imageData[pos] = dest->imageData[pos + 1] = dest->imageData[pos + 2] =
+  (unsigned char) 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+}
+
+void grayscale(IplImage* src, IplImage* dest) {
+  int size = src->width * src->height;
+  int row, col;
+  for(int i = 0; i < size; i++) {
+    row = i / src->width;
+    col = i % src ->width;
+    grayscale_pixel(src, dest, row, col);
   }
 }
 
@@ -33,14 +54,14 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
   Timer t;
-  int acum = 0;
+  double acum = 0;
   for(int i = 0; i < 10; i++) {
     t.start();
     grayscale(src, dest);
     acum += t.stop();
   }
 
-  printf("Average time = %.5d ms\n", (acum / 10));
+  printf("avg time = %.5lf ms\n", (acum / 10));
 
   cvShowImage("Original", src);
   cvShowImage("Grayscale", dest);

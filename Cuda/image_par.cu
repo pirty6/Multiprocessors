@@ -1,3 +1,19 @@
+/*----------------------------------------------------------------
+
+*
+
+* Multiprocesadores: Cuda
+
+* Fecha: 11-Nov-2019
+
+* Autor: A01206747 Mariana Perez
+  Autor: A01205559 Roberto Nuñez
+
+* Image = 1080 x 1920
+  Speedup =  33.93700 ms / 0.00250 ms  = 13.5748
+  
+*--------------------------------------------------------------*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <opencv/highgui.h>
@@ -48,7 +64,7 @@ int main(int argc, char* argv[]) {
   dim3 dimBlock(16, 16, 1);
 
 	acum = 0;
-	for (i = 0; i < 1; i++) {
+	for (i = 0; i < 10; i++) {
 		t.start();
 		grayscale<<<dimGrid, dimBlock>>>(dev_src, dev_dest, src->width, src->height, src->nChannels);
 		acum += t.stop();
@@ -59,7 +75,7 @@ int main(int argc, char* argv[]) {
 	cudaFree(dev_dest);
 	cudaFree(dev_src);
 
-	printf("avg time = %.5lf ms\n", (acum / 1));
+	printf("avg time = %.5lf ms\n", (acum / 10));
 
 	cvShowImage("Original", src);
 	cvShowImage("Grayscale", dest);
