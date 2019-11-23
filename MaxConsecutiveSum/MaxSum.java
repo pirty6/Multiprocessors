@@ -82,14 +82,11 @@ public class MaxSum extends Thread {
 
   public static void main(String args[]) {
     final int SIZE = 1_000_000;
-<<<<<<< HEAD
     //int[] a = {-2,1,-3,4,-1,2,1,-5,4};
     int[] a = new int[SIZE];
     Utils.randomArray(a);
     Utils.displayArray("Array", a);
-=======
     int[] a =  {-1, 6, -2, 5, -1, 4, 3, -4, -3, 1};
->>>>>>> master
 
     /*int[] a = new int[SIZE];
     Utils.randomArray(a);
@@ -99,11 +96,8 @@ public class MaxSum extends Thread {
     int block;
     long startTime, stopTime;
     double acum;
-<<<<<<< HEAD
     long result = 0;
-=======
     int result = Integer.MIN_VALUE;
->>>>>>> master
 
     //threads = new MaxSum[3];
     threads = new MaxSum[1];
@@ -112,7 +106,6 @@ public class MaxSum extends Thread {
     acum = 0;
     int mid = (0 - a.length - 1) / 2;
     for(int i = 0; i < 10; i++) {
-<<<<<<< HEAD
        result = Integer.MIN_VALUE;
       for(int j = 0; j < threads.length; j++) {
         if(j != threads.length - 1) {
@@ -121,11 +114,9 @@ public class MaxSum extends Thread {
           threads[j] = new MaxSum((j) * block, a.length, a);
         }
       }
-=======
       threads[0] = new MaxSum(1 * block, a.length-1, a);
       //threads[1] = new MaxSum(1 * block, (mid * block) , a);
       //threads[2] = new MaxSum((mid + 1)* block, a.length-1, a);
->>>>>>> master
 
       startTime = System.currentTimeMillis();
 

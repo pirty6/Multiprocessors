@@ -11,7 +11,7 @@
 
 * Image = 1080 x 1920
   Speedup =  33.93700 ms / 0.00250 ms  = 13.5748
-  
+
 *--------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -82,6 +82,7 @@ int main(int argc, char* argv[]) {
 	cvWaitKey(0);
 	cvDestroyWindow("Original");
 	cvDestroyWindow("Grayscale");
+  cvSaveImage("out.jpg", dest);
 
 	return 0;
 }
