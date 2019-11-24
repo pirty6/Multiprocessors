@@ -9,7 +9,7 @@
 * Image dimension = 1920 x 1080
   Image size = 1.6MB
 
-  Speedup =  31.10000 / 10.60000 = 2.93396226
+  Speedup =  31.10000 / 10.20000 = 3.04901961
 
 *--------------------------------------------------------------*/
 
@@ -91,16 +91,18 @@ public class SepiaSeq {
 		final BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		destination.setRGB(0, 0, w, h, dest, 0, w);
 
+
+
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                ImageFrame.showImage("Original - " + filename, source);
             }
-    });
+        });
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-               ImageFrame.showImage("Sepia - " + filename, destination);
+               ImageFrame.showImage("Blur - " + filename, destination);
             }
-    });
+        });
   }
 }

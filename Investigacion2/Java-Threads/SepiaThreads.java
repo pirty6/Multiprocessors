@@ -9,7 +9,7 @@
 * Image dimension = 1920 x 1080
   Image size = 1.6MB
 
-  Speedup =  31.10000 / 10.60000 = 2.93396226
+  Speedup =  31.10000 / 10.20000 = 3.04901961
 
 *--------------------------------------------------------------*/
 
@@ -17,24 +17,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 
-public class SepiaSeq {
-  private int[] src;
-  private int[] dest;
+public class SepiaThreads extends Thread {
+  private int src[];
+  private int dest[];
   private int width;
   private int height;
+  private int start;
+  private int end;
 
-  public SepiaSeq(int src[], int dest[], int width, int height) {
+  public SepiaThreads(int start, int end, int src[], int dest[], int width, int height) {
+    this.start = start;
+    this.end = end;
     this.src = src;
     this.dest = dest;
     this.width = width;
     this.height = height;
   }
 
-  private void RGBToSepia() {
-    int i, size;
+  public void run() {
+    int i;
     int ren, col;
-    size = width * height;
-    for(i = 0; i < size; i++) {
+    for(i = start; i < end; i++) {
       ren = i / width;
       col = i % width;
       setPixel(ren, col);
@@ -80,27 +83,46 @@ public class SepiaSeq {
     int src[] = source.getRGB(0, 0, w, h, null, 0, w);
     int dest[] = new int[src.length];
 
-    SepiaSeq obj = new SepiaSeq(src, dest, w, h);
-    for(int i = 0; i < 10; i++) {
+    int block = (src.length / Runtime.getRuntime().availableProcessors());
+    SepiaThreads[] threads = new SepiaThreads[Runtime.getRuntime().availableProcessors()];
+
+    for(int j = 0; j < 10; j++) {
+      for(int i = 0; i < threads.length; i++) {
+        if(i != threads.length - 1) {
+          threads[i] = new SepiaThreads((i * block), ((i + 1) * block), src, dest, w, h);
+        } else {
+          threads[i] = new SepiaThreads((i * block), src.length, src, dest, w, h);
+        }
+      }
       startTime = System.currentTimeMillis();
-      obj.RGBToSepia();
+      for(int i = 0; i < threads.length; i++) {
+        threads[i].start();
+      }
+      for(int i = 0; i < threads.length; i++) {
+        try {
+          threads[i].join();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
       stopTime = System.currentTimeMillis();
       acum += (stopTime - startTime);
     }
     System.out.printf("avg time = %.5f\n", (acum / 10));
-		final BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		destination.setRGB(0, 0, w, h, dest, 0, w);
+    final BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    destination.setRGB(0, 0, w, h, dest, 0, w);
 
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                ImageFrame.showImage("Original - " + filename, source);
             }
     });
 
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-               ImageFrame.showImage("Sepia - " + filename, destination);
+               ImageFrame.showImage("Blur - " + filename, destination);
             }
     });
   }
+
 }
