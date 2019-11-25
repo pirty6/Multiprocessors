@@ -6,7 +6,7 @@
 
 * Fecha: 3-Dic-2019
 
-* Autor: A01205559 Roberto Nuñez
+* Autor: A01206747 Mariana Perez
 
 * Image = 1080 x 1920
   Speedup =  104.82820 ms / 0.00520 ms  = 20159.2692
