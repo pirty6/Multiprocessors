@@ -7,7 +7,7 @@
 * Autor: A01205559 Roberto Nuñez
 
 * X = 1_000, Y = 2_000
-  Speedup =  1392.76660  / 0.00260 = 535679.462
+  Speedup =  1392.76660  / 0.00310 = 535679.462
 
 *--------------------------------------------------------------*/
 
@@ -26,7 +26,7 @@
    int row = blockIdx.y * blockDim.y + threadIdx.y;
    int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-   float temp =  0;
+   int temp =  0;
    if(row < x && col < x) {
      for(int i = 0; i < y; i++) {
        temp += a[row * y + i] * b[i * x + col];
@@ -51,8 +51,13 @@ int main() {
   matrixB = (int*)malloc(sizeof(int) * X * Y);
   matrixC = (int*)malloc(sizeof(int) * X * X);
 
-  fill_array(matrixA, Y * X);
-  fill_array(matrixB, X * Y);
+  for(int i = 0; i < Y * X; i++) {
+    matrixA[i] = (i % Y) + 1;
+  }
+
+  for(int i = 0; i < Y * X; i++) {
+    matrixB[i] = (i % X) + 1;
+  }
 
   printf("Matrix A:\n");
   for(int i = 0; i < X * Y; i++) {

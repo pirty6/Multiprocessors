@@ -6,7 +6,6 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-#define N 			10
 #define DISPLAY		100
 #define MAX_VALUE	10000
 
